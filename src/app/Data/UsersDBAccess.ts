@@ -16,7 +16,7 @@ export class UsersDBAccess {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve();
+                    resolve(null);
                 }
             })
         });
