@@ -3,7 +3,7 @@ import { SessionTokenDBAccess } from "../../app/Authorization/SessionTokenDBAcce
 import * as Nedb from "nedb";
 import { SessionToken } from "../../app/Models/ServerModels";
 
-jest.mock('nedb');
+jest.mock("nedb");
 
 describe("SessionTokenDBAccess test suite", () => {
   let sessionTokenDBAccess: SessionTokenDBAccess;
@@ -12,6 +12,7 @@ describe("SessionTokenDBAccess test suite", () => {
     loadDatabase: jest.fn(),
     insert: jest.fn(),
     find: jest.fn(),
+    remove: jest.fn(),
   };
 
   const token: SessionToken = {
@@ -96,6 +97,57 @@ describe("SessionTokenDBAccess test suite", () => {
         { tokenId: token.tokenId },
         expect.any(Function)
       );
+    });
+
+    describe("test deleteToken", () => {
+      it("should delete token without error", async () => {
+        nedbMock.remove.mockImplementationOnce(
+          (someTokenId: string, options: any, cb: any) => {
+            cb(null, 1);
+          }
+        );
+        await sessionTokenDBAccess.deleteToken(token.tokenId);
+
+        expect(nedbMock.remove).toBeCalledWith(
+          { tokenId: token.tokenId },
+          {},
+          expect.any(Function)
+        );
+      });
+
+      it("should try delete token with error", async () => {
+        nedbMock.remove.mockImplementationOnce(
+          (someTokenId: string, options: any, cb: any) => {
+            cb(new Error("something went wrong"), 0);
+          }
+        );
+        await expect(
+          sessionTokenDBAccess.deleteToken(token.tokenId)
+        ).rejects.toThrow("something went wrong");
+
+        expect(nedbMock.remove).toBeCalledWith(
+          { tokenId: token.tokenId },
+          {},
+          expect.any(Function)
+        );
+      });
+
+      it("should not delete token", async () => {
+        nedbMock.remove.mockImplementationOnce(
+          (someTokenId: string, options: any, cb: any) => {
+            cb(null, 0);
+          }
+        );
+        await expect(
+          sessionTokenDBAccess.deleteToken('')
+        ).rejects.toThrow("Session token not deleted");
+
+        expect(nedbMock.remove).toBeCalledWith(
+          { tokenId: "" },
+          {},
+          expect.any(Function)
+        );
+      });
     });
   });
 });
