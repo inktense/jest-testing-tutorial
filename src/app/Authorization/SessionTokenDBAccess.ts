@@ -1,9 +1,9 @@
 import { SessionToken } from '../Models/ServerModels';
-import * as Nedb from 'nedb';
+const Nedb = require('nedb')
 
 export class SessionTokenDBAccess {
 
-    private nedb: Nedb;
+    private nedb: typeof Nedb;
 
     constructor(nedb = new Nedb('databases/sessionToken.db')) {
         this.nedb = nedb;
@@ -40,7 +40,7 @@ export class SessionTokenDBAccess {
 
     public async deleteToken(tokenId: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.nedb.remove({ tokenId: tokenId }, {}, (err: Error, numRemoved: number) => {
+            this.nedb.remove({ tokenId: tokenId }, {}, (err: Error | null, numRemoved: number) => {
                 if (err) {
                     reject(err)
                 } else {

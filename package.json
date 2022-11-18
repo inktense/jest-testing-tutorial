@@ -20,8 +20,11 @@
   },
   "homepage": "https://github.com/inktense/jest-testing-tutorial#readme",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/jest": "^29.2.1",
+    "@types/nedb": "^1.8.12",
     "@types/node": "^18.11.9",
+    "axios": "^1.2.0-alpha.1",
     "jest": "^29.2.2",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",

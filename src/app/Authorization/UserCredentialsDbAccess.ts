@@ -1,9 +1,9 @@
-import * as Nedb from 'nedb';
+const Nedb = require('nedb')
 import { UserCredentials } from '../Models/ServerModels';
 
 export class UserCredentialsDbAccess {
 
-    private nedb: Nedb;
+    private nedb: typeof Nedb;
 
     constructor(nedb = new Nedb('databases/UsersCredentials.db')) {
         this.nedb = nedb;
@@ -43,7 +43,7 @@ export class UserCredentialsDbAccess {
             this.nedb.remove({
                 username: usersCredentials.username,
                 password: usersCredentials.password
-            }, {}, (err: Error, numRemoved: number) => {
+            }, {}, (err: Error | null, numRemoved: number) => {
                 if (err) {
                     return reject(err);
                 } else if (numRemoved == 0) {

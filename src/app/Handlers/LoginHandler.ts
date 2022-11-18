@@ -44,7 +44,7 @@ export class LoginHandler {
                 this.response.statusCode = HTTP_CODES.NOT_fOUND;
                 this.response.write('wrong username or password');
             }
-        } catch (error) {
+        } catch (error: any) {
             this.response.statusCode = HTTP_CODES.INTERNAL_SERVER_ERROR;
             this.response.write('Internal error: ' + error.message);
         }

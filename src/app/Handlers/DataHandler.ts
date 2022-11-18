@@ -51,7 +51,7 @@ export class DataHandler {
                 this.response.statusCode = HTTP_CODES.UNAUTHORIZED;
                 this.response.write('Unauthorized operation!');
             }
-        } catch (error) {
+        } catch (error: any) {
             this.response.statusCode = HTTP_CODES.INTERNAL_SERVER_ERROR;
             this.response.write('Internal error: ' + error.message);
         }
